@@ -9,49 +9,70 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-     
-}
+        
+    }
+    
+    var inactiveQueue:DispatchQueue!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-//        simpleQueue()
-        queuesWithQosAtrribute()
         
-       // concurrentQueue()
+        //        simpleQueue()
+        //        queuesWithQosAtrribute()
         
-//        if let queue = inactiveQueue {
-//            queue.activate()
-//        }
-//
+        concurrentQueue()
+        
+        // if let... inactiveQueue isn't nil? - start is!
+        if let queue = inactiveQueue {
+            
+            queue.activate()
+        }
+
 //        gloablQueue()
     }
-    var inactiveQueue:DispatchQueue!
+    
+    
+    
     func concurrentQueue(){
         //create newQueue with userInitiated Qos
-        //let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.background, attributes: .concurrent)
-        let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.background, attributes: [.initiallyInactive,.concurrent])
-        inactiveQueue = newQueue
+        
+        //        let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.background, attributes: .concurrent)
+        //        let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.background, attributes: [.initiallyInactive,.concurrent])
+        //        inactiveQueue = newQueue
+        
+//         let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.userInitiated) // serial queue
+//         let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.userInitiated, attributes: .concurrent) // concurent queue
+        
+        //let newQueue = DispatchQueue(label: "com.concurrent.ekram", qos: DispatchQoS.background, attributes: .initiallyInactive) // in active!
+        let newQueue = DispatchQueue(label: "com.newConcurent.ekram", qos: .background, attributes: [.initiallyInactive, .concurrent])
+        inactiveQueue = newQueue // outFunc property init parameters
+        
+        
+        // active state and viewDidAppear don’t know about queue so its need to active manually
+        // start it (inactiveQueue) in func viewWillAppear
         
         newQueue.async {
             for i in 0..<10 {
                 print("Custom Green Love: 💚",i)
             }
         }
+        
         newQueue.async {
             for i in 0..<10 {
                 print("General Lover : ❤️",i)
             }
         }
+        
         newQueue.async {
             for i in 0..<10 {
                 print("Yallow love :💛",i)
             }
         }
     }
-
+    
     func simpleQueue() {
         //create cuostom Queue
         let queue = DispatchQueue(label: "com.simpleQueue.Ekram")
@@ -73,9 +94,9 @@ class ViewController: UIViewController {
     func queuesWithQosAtrribute() {
         
         //create DispathQueue with Qos Attribute
-
-        let queueOne = DispatchQueue(label: "com.queues.ekram", qos: .userInitiated) // or ...qos: DispatchQoS.userInitiated)
-        let queueTwo = DispatchQueue(label: "com.queues.ekram", qos: .userInitiated)
+        
+        let queueOne = DispatchQueue(label: "com.queues.ekram", qos: .background) // or ...qos: DispatchQoS.userInitiated)
+        let queueTwo = DispatchQueue(label: "com.queues.ekram", qos: DispatchQoS.utility)
         
         /*
          change one (queueOne) to:
@@ -117,6 +138,6 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
 }
 
