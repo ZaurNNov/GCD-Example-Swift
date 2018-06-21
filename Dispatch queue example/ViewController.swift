@@ -73,10 +73,19 @@ class ViewController: UIViewController {
     func queuesWithQosAtrribute() {
         
         //create DispathQueue with Qos Attribute
-//        let queueOne = DispatchQueue(label: "com.queues.ekram", qos: DispatchQoS.background)
-//        let queueTwo = DispatchQueue(label: "com.queues.ekram", qos: DispatchQoS.utility)
-        let queueOne = DispatchQueue(label: "com.queues.ekram", qos: .userInitiated)
+
+        let queueOne = DispatchQueue(label: "com.queues.ekram", qos: .userInitiated) // or ...qos: DispatchQoS.userInitiated)
         let queueTwo = DispatchQueue(label: "com.queues.ekram", qos: .userInitiated)
+        
+        /*
+         change one (queueOne) to:
+         qos: .utility
+         qos: .userInitiated
+         qos: .background
+         qos: .userInteractive
+         ...
+         and see result
+         */
         
         
         queueOne.async {
@@ -85,7 +94,7 @@ class ViewController: UIViewController {
             }
         }
         
-        queueTwo.sync {
+        queueTwo.async {
             for i in 100..<110 {
                 print("General Lover : ❤️",i)
             }
@@ -96,7 +105,6 @@ class ViewController: UIViewController {
             print("Yallow love :💛",i)
         }
     }
-    
     
     func gloablQueue() {
         
