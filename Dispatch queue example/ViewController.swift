@@ -24,14 +24,14 @@ class ViewController: UIViewController {
         //        queuesWithQosAtrribute()
         
         concurrentQueue()
-        
+
         // if let... inactiveQueue isn't nil? - start is!
         if let queue = inactiveQueue {
-            
+
             queue.activate()
         }
 
-//        gloablQueue()
+        gloablQueue()
     }
     
     
@@ -129,7 +129,7 @@ class ViewController: UIViewController {
     
     func gloablQueue() {
         
-        //let globalQueue = DispatchQueue.global()
+//        let globalQueue = DispatchQueue.global() // Если мы не укажем qos, это будет default qos
         let globalQueue = DispatchQueue.global(qos: .background)
         
         globalQueue.async {
@@ -141,3 +141,17 @@ class ViewController: UIViewController {
     
 }
 
+/*
+ 
+ Synchronous vs Asynchronous:
+ 
+ Synchronous :
+ Synchronous method wait for the return still complete task Than return.
+ Synchronous block current thread for the complete task
+ 
+ Asynchronous:
+ asynchronous return immediately without waiting for the complete task .
+ asynchronous don’t block current thread its return immediately
+
+ 
+ */
